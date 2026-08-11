@@ -2,7 +2,9 @@
 // PRODUCT ROUTES
 // ==========================================
 
-const express = require("express");
+const express =
+    require("express");
+
 
 const router =
     express.Router();
@@ -10,23 +12,27 @@ const router =
 
 const {
     getFilteredProducts
-} = require("../controllers/productController");
+} =
+    require("../controllers/productController");
 
 
 // ==========================================
 // GET PRODUCTS
 // ==========================================
-
+//
 // GET /api/products
 //
-// Optional query parameters:
+// Optional parameters:
 //
 // categories
 // minPrice
 // maxPrice
 // rating
+// sortBy
 //
-// Example:
+// Examples:
+//
+// /api/products
 //
 // /api/products?categories=Electronics
 //
@@ -34,7 +40,12 @@ const {
 //
 // /api/products?rating=4
 //
-// /api/products?categories=Electronics,Footwear&minPrice=1000&maxPrice=3000&rating=4
+// /api/products?sortBy=price-low-high
+//
+// /api/products?sortBy=top-rated
+//
+// /api/products?categories=Electronics,Footwear&minPrice=1000&maxPrice=3000&rating=4&sortBy=price-low-high
+
 
 router.get(
     "/products",
@@ -42,4 +53,9 @@ router.get(
 );
 
 
-module.exports = router;
+// ==========================================
+// EXPORT
+// ==========================================
+
+module.exports =
+    router;
