@@ -78,32 +78,58 @@ const products = [
 
 
 // ==========================================
+// FILTER STATE
+// ==========================================
+
+const filterState = {
+    categories: [],
+    minPrice: 0,
+    maxPrice: 5000,
+    rating: null
+};
+
+
+// ==========================================
 // DOM ELEMENTS
 // ==========================================
 
-const productGrid = document.getElementById("productGrid");
+const productGrid =
+    document.getElementById("productGrid");
 
-const productCount = document.getElementById("productCount");
+const productCount =
+    document.getElementById("productCount");
 
-const emptyState = document.getElementById("emptyState");
+const emptyState =
+    document.getElementById("emptyState");
 
-const resetBtn = document.getElementById("resetBtn");
+const resetBtn =
+    document.getElementById("resetBtn");
 
-const emptyResetBtn = document.getElementById("emptyResetBtn");
+const emptyResetBtn =
+    document.getElementById("emptyResetBtn");
 
-const minPrice = document.getElementById("minPrice");
+const minPrice =
+    document.getElementById("minPrice");
 
-const maxPrice = document.getElementById("maxPrice");
+const maxPrice =
+    document.getElementById("maxPrice");
 
-const minPriceText = document.getElementById("minPriceText");
+const minPriceText =
+    document.getElementById("minPriceText");
 
-const maxPriceText = document.getElementById("maxPriceText");
+const maxPriceText =
+    document.getElementById("maxPriceText");
+
+const rangeProgress =
+    document.getElementById("rangeProgress");
 
 const categoryFilters =
     document.querySelectorAll(".category-filter");
 
 const ratingFilters =
-    document.querySelectorAll('input[name="rating"]');
+    document.querySelectorAll(
+        'input[name="rating"]'
+    );
 
 
 // ==========================================
@@ -114,11 +140,16 @@ function displayProducts(productList) {
 
     productGrid.innerHTML = "";
 
+
+    // Update product count
+
     productCount.textContent =
         `${productList.length} product${productList.length !== 1 ? "s" : ""}`;
 
 
-    // No products
+    // ======================================
+    // EMPTY STATE
+    // ======================================
 
     if (productList.length === 0) {
 
@@ -130,7 +161,9 @@ function displayProducts(productList) {
     }
 
 
-    // Products available
+    // ======================================
+    // PRODUCT GRID
+    // ======================================
 
     productGrid.style.display = "grid";
 
@@ -139,10 +172,13 @@ function displayProducts(productList) {
 
     productList.forEach(product => {
 
-        const card = document.createElement("div");
+        const card =
+            document.createElement("article");
 
         card.className = "product-card";
 
+
+        // Generate stars
 
         const stars =
             "★".repeat(product.rating) +
@@ -155,6 +191,7 @@ function displayProducts(productList) {
                 class="product-image"
                 src="${product.image}"
                 alt="${product.name}"
+                loading="lazy"
             >
 
             <div class="product-info">
@@ -168,12 +205,16 @@ function displayProducts(productList) {
                 </h3>
 
                 <div class="product-price">
-                    ₹${product.price}
+                    ₹${product.price.toLocaleString("en-IN")}
                 </div>
 
-                <div class="product-rating">
+                <div
+                    class="product-rating"
+                    aria-label="${product.rating} out of 5 stars"
+                >
                     ${stars}
-                    <span style="color:#777">
+
+                    <span class="rating-number">
                         (${product.rating})
                     </span>
                 </div>
@@ -194,17 +235,23 @@ function displayProducts(productList) {
 
 function getSelectedCategories() {
 
-    const selected = [];
+    const selectedCategories = [];
+
 
     categoryFilters.forEach(filter => {
 
         if (filter.checked) {
-            selected.push(filter.value);
+
+            selectedCategories.push(
+                filter.value
+            );
+
         }
 
     });
 
-    return selected;
+
+    return selectedCategories;
 }
 
 
@@ -219,11 +266,96 @@ function getSelectedRating() {
             'input[name="rating"]:checked'
         );
 
+
     if (!selectedRating) {
-        return 0;
+
+        return null;
+
     }
 
-    return Number(selectedRating.value);
+
+    return Number(
+        selectedRating.value
+    );
+}
+
+
+// ==========================================
+// UPDATE FILTER STATE
+// ==========================================
+
+function updateFilterState() {
+
+    filterState.categories =
+        getSelectedCategories();
+
+
+    filterState.minPrice =
+        Number(minPrice.value);
+
+
+    filterState.maxPrice =
+        Number(maxPrice.value);
+
+
+    filterState.rating =
+        getSelectedRating();
+
+}
+
+
+// ==========================================
+// UPDATE PRICE DISPLAY
+// ==========================================
+
+function updatePriceDisplay() {
+
+    minPriceText.textContent =
+        `₹${Number(minPrice.value).toLocaleString("en-IN")}`;
+
+
+    maxPriceText.textContent =
+        `₹${Number(maxPrice.value).toLocaleString("en-IN")}`;
+
+}
+
+
+// ==========================================
+// UPDATE RANGE PROGRESS
+// ==========================================
+
+function updateRangeProgress() {
+
+    const minimum =
+        Number(minPrice.min);
+
+    const maximum =
+        Number(minPrice.max);
+
+    const currentMin =
+        Number(minPrice.value);
+
+    const currentMax =
+        Number(maxPrice.value);
+
+
+    const minPercent =
+        ((currentMin - minimum) /
+        (maximum - minimum)) * 100;
+
+
+    const maxPercent =
+        ((currentMax - minimum) /
+        (maximum - minimum)) * 100;
+
+
+    rangeProgress.style.left =
+        `${minPercent}%`;
+
+
+    rangeProgress.style.width =
+        `${maxPercent - minPercent}%`;
+
 }
 
 
@@ -233,51 +365,78 @@ function getSelectedRating() {
 
 function applyFilters() {
 
-    const selectedCategories =
-        getSelectedCategories();
+    // Update state first
 
-    const selectedRating =
-        getSelectedRating();
+    updateFilterState();
 
-    const minimumPrice =
-        Number(minPrice.value);
 
-    const maximumPrice =
-        Number(maxPrice.value);
+    const {
+        categories,
+        minPrice: minimumPrice,
+        maxPrice: maximumPrice,
+        rating: minimumRating
+    } = filterState;
 
+
+    // ======================================
+    // FILTER MASTER INVENTORY
+    // ======================================
 
     const filteredProducts =
         products.filter(product => {
 
 
-            // Category filter
+            // -------------------------------
+            // CATEGORY
+            // -------------------------------
 
             const categoryMatch =
-                selectedCategories.length === 0 ||
-                selectedCategories.includes(product.category);
+                categories.length === 0 ||
+                categories.includes(
+                    product.category
+                );
 
 
-            // Price filter
+            // -------------------------------
+            // MINIMUM PRICE
+            // -------------------------------
 
-            const priceMatch =
-                product.price >= minimumPrice &&
+            const minPriceMatch =
+                product.price >= minimumPrice;
+
+
+            // -------------------------------
+            // MAXIMUM PRICE
+            // -------------------------------
+
+            const maxPriceMatch =
                 product.price <= maximumPrice;
 
 
-            // Rating filter
+            // -------------------------------
+            // RATING
+            // -------------------------------
 
             const ratingMatch =
-                product.rating >= selectedRating;
+                minimumRating === null ||
+                product.rating >= minimumRating;
 
+
+            // -------------------------------
+            // INTERSECTION
+            // -------------------------------
 
             return (
                 categoryMatch &&
-                priceMatch &&
+                minPriceMatch &&
+                maxPriceMatch &&
                 ratingMatch
             );
 
         });
 
+
+    // Display filtered result
 
     displayProducts(filteredProducts);
 
@@ -313,25 +472,33 @@ ratingFilters.forEach(filter => {
 
 
 // ==========================================
-// PRICE EVENTS
+// MINIMUM PRICE EVENT
 // ==========================================
 
 minPrice.addEventListener(
     "input",
     () => {
 
-        // Don't allow minimum > maximum
+        const minimum =
+            Number(minPrice.value);
 
-        if (
-            Number(minPrice.value) >
-            Number(maxPrice.value)
-        ) {
+        const maximum =
+            Number(maxPrice.value);
+
+
+        // Prevent minimum > maximum
+
+        if (minimum > maximum) {
+
             minPrice.value =
                 maxPrice.value;
+
         }
 
-        minPriceText.textContent =
-            `₹${minPrice.value}`;
+
+        updatePriceDisplay();
+
+        updateRangeProgress();
 
         applyFilters();
 
@@ -339,22 +506,34 @@ minPrice.addEventListener(
 );
 
 
+// ==========================================
+// MAXIMUM PRICE EVENT
+// ==========================================
+
 maxPrice.addEventListener(
     "input",
     () => {
 
-        // Don't allow maximum < minimum
+        const minimum =
+            Number(minPrice.value);
 
-        if (
-            Number(maxPrice.value) <
-            Number(minPrice.value)
-        ) {
+        const maximum =
+            Number(maxPrice.value);
+
+
+        // Prevent maximum < minimum
+
+        if (maximum < minimum) {
+
             maxPrice.value =
                 minPrice.value;
+
         }
 
-        maxPriceText.textContent =
-            `₹${maxPrice.value}`;
+
+        updatePriceDisplay();
+
+        updateRangeProgress();
 
         applyFilters();
 
@@ -368,17 +547,21 @@ maxPrice.addEventListener(
 
 function resetFilters() {
 
-    // Uncheck categories
+    // Reset categories
 
     categoryFilters.forEach(filter => {
+
         filter.checked = false;
+
     });
 
 
-    // Uncheck ratings
+    // Reset ratings
 
     ratingFilters.forEach(filter => {
+
         filter.checked = false;
+
     });
 
 
@@ -389,17 +572,34 @@ function resetFilters() {
     maxPrice.value = 5000;
 
 
-    minPriceText.textContent = "₹0";
+    // Reset state
 
-    maxPriceText.textContent = "₹5000";
+    filterState.categories = [];
+
+    filterState.minPrice = 0;
+
+    filterState.maxPrice = 5000;
+
+    filterState.rating = null;
 
 
-    // Show all products
+    // Update UI
+
+    updatePriceDisplay();
+
+    updateRangeProgress();
+
+
+    // Show complete inventory
 
     displayProducts(products);
 
 }
 
+
+// ==========================================
+// RESET BUTTON EVENTS
+// ==========================================
 
 resetBtn.addEventListener(
     "click",
@@ -414,7 +614,11 @@ emptyResetBtn.addEventListener(
 
 
 // ==========================================
-// INITIAL LOAD
+// INITIALIZATION
 // ==========================================
+
+updatePriceDisplay();
+
+updateRangeProgress();
 
 displayProducts(products);
