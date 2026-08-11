@@ -1,4 +1,9 @@
+// ==========================================
+// MASTER PRODUCT INVENTORY
+// ==========================================
+
 const products = [
+
     {
         id: 1,
         name: "Wireless Headphones",
@@ -7,6 +12,7 @@ const products = [
         rating: 4,
         image: "https://picsum.photos/400/300?random=1"
     },
+
     {
         id: 2,
         name: "Smart Watch",
@@ -15,6 +21,7 @@ const products = [
         rating: 5,
         image: "https://picsum.photos/400/300?random=2"
     },
+
     {
         id: 3,
         name: "Cotton T-Shirt",
@@ -23,6 +30,7 @@ const products = [
         rating: 4,
         image: "https://picsum.photos/400/300?random=3"
     },
+
     {
         id: 4,
         name: "Denim Jacket",
@@ -31,6 +39,7 @@ const products = [
         rating: 3,
         image: "https://picsum.photos/400/300?random=4"
     },
+
     {
         id: 5,
         name: "Running Shoes",
@@ -39,6 +48,7 @@ const products = [
         rating: 5,
         image: "https://picsum.photos/400/300?random=5"
     },
+
     {
         id: 6,
         name: "Casual Sneakers",
@@ -47,6 +57,7 @@ const products = [
         rating: 4,
         image: "https://picsum.photos/400/300?random=6"
     },
+
     {
         id: 7,
         name: "Bluetooth Speaker",
@@ -55,6 +66,7 @@ const products = [
         rating: 3,
         image: "https://picsum.photos/400/300?random=7"
     },
+
     {
         id: 8,
         name: "Formal Shirt",
@@ -63,6 +75,8 @@ const products = [
         rating: 5,
         image: "https://picsum.photos/400/300?random=8"
     }
+
 ];
+
 
 module.exports = products;
