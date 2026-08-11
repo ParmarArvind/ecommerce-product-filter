@@ -2,23 +2,28 @@
 // EXPRESS SERVER
 // ==========================================
 
-const express = require("express");
+const express =
+    require("express");
 
-const cors = require("cors");
+
+const cors =
+    require("cors");
+
 
 const productRoutes =
     require("./routes/productRoutes");
 
 
 // ==========================================
-// CREATE APP
+// CREATE EXPRESS APP
 // ==========================================
 
 const app =
     express();
 
 
-const PORT = 5000;
+const PORT =
+    5000;
 
 
 // ==========================================
@@ -94,6 +99,7 @@ app.use(
     (error, req, res, next) => {
 
         console.error(error);
+
 
         res.status(500).json({
 
