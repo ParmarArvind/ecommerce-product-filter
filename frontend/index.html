@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Product Filter</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="app">
+
+        <!-- ================= SIDEBAR ================= -->
+
+        <aside class="sidebar">
+
+            <div class="sidebar-header">
+                <h2>Filters</h2>
+
+                <button id="resetBtn" class="reset-btn">
+                    Reset
+                </button>
+            </div>
+
+
+            <!-- CATEGORY -->
+
+            <section class="filter-section">
+
+                <h3>Category</h3>
+
+                <label class="checkbox-item">
+                    <input
+                        type="checkbox"
+                        class="category-filter"
+                        value="Electronics"
+                    >
+                    <span>Electronics</span>
+                </label>
+
+                <label class="checkbox-item">
+                    <input
+                        type="checkbox"
+                        class="category-filter"
+                        value="Apparel"
+                    >
+                    <span>Apparel</span>
+                </label>
+
+                <label class="checkbox-item">
+                    <input
+                        type="checkbox"
+                        class="category-filter"
+                        value="Footwear"
+                    >
+                    <span>Footwear</span>
+                </label>
+
+            </section>
+
+
+            <!-- PRICE -->
+
+            <section class="filter-section">
+
+                <h3>Price Range</h3>
+
+                <div class="price-values">
+                    <span id="minPriceText">₹0</span>
+                    <span id="maxPriceText">₹5000</span>
+                </div>
+
+                <div class="range-container">
+
+                    <input
+                        type="range"
+                        id="minPrice"
+                        min="0"
+                        max="5000"
+                        value="0"
+                        step="100"
+                    >
+
+                    <input
+                        type="range"
+                        id="maxPrice"
+                        min="0"
+                        max="5000"
+                        value="5000"
+                        step="100"
+                    >
+
+                </div>
+
+            </section>
+
+
+            <!-- RATING -->
+
+            <section class="filter-section">
+
+                <h3>Minimum Rating</h3>
+
+                <label class="rating-option">
+                    <input
+                        type="radio"
+                        name="rating"
+                        value="1"
+                    >
+                    <span>★</span>
+                    <span class="rating-text">& above</span>
+                </label>
+
+                <label class="rating-option">
+                    <input
+                        type="radio"
+                        name="rating"
+                        value="2"
+                    >
+                    <span>★★</span>
+                    <span class="rating-text">& above</span>
+                </label>
+
+                <label class="rating-option">
+                    <input
+                        type="radio"
+                        name="rating"
+                        value="3"
+                    >
+                    <span>★★★</span>
+                    <span class="rating-text">& above</span>
+                </label>
+
+                <label class="rating-option">
+                    <input
+                        type="radio"
+                        name="rating"
+                        value="4"
+                    >
+                    <span>★★★★</span>
+                    <span class="rating-text">& above</span>
+                </label>
+
+                <label class="rating-option">
+                    <input
+                        type="radio"
+                        name="rating"
+                        value="5"
+                    >
+                    <span>★★★★★</span>
+                    <span class="rating-text">& above</span>
+                </label>
+
+            </section>
+
+        </aside>
+
+
+        <!-- ================= MAIN CONTENT ================= -->
+
+        <main class="main-content">
+
+            <div class="products-header">
+
+                <div>
+                    <h1>Product Inventory</h1>
+                    <p id="productCount">0 products</p>
+                </div>
+
+            </div>
+
+
+            <!-- PRODUCT GRID -->
+
+            <div id="productGrid" class="product-grid"></div>
+
+
+            <!-- EMPTY STATE -->
+
+            <div id="emptyState" class="empty-state">
+
+                <div class="empty-icon">
+                    🛍️
+                </div>
+
+                <h2>No items match your criteria</h2>
+
+                <p>
+                    Try changing your filters to find more products.
+                </p>
+
+                <button id="emptyResetBtn" class="reset-large-btn">
+                    Reset filters
+                </button>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
