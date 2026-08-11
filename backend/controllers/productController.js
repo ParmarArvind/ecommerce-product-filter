@@ -2,22 +2,38 @@
 // PRODUCT CONTROLLER
 // ==========================================
 
-const products = require("../data/products");
+const products =
+    require("../data/products");
 
 
 // ==========================================
-// ALLOWED CATEGORIES
+// ALLOWED VALUES
 // ==========================================
 
 const allowedCategories = [
+
     "Electronics",
+
     "Apparel",
+
     "Footwear"
+
+];
+
+
+const allowedSortOptions = [
+
+    "default",
+
+    "price-low-high",
+
+    "top-rated"
+
 ];
 
 
 // ==========================================
-// FILTER PRODUCTS
+// GET FILTERED + SORTED PRODUCTS
 // ==========================================
 
 function getFilteredProducts(req, res) {
@@ -32,7 +48,8 @@ function getFilteredProducts(req, res) {
             categories,
             minPrice,
             maxPrice,
-            rating
+            rating,
+            sortBy
         } = req.query;
 
 
@@ -74,7 +91,9 @@ function getFilteredProducts(req, res) {
             );
 
 
-        if (invalidCategories.length > 0) {
+        if (
+            invalidCategories.length > 0
+        ) {
 
             return res.status(400).json({
 
@@ -163,7 +182,7 @@ function getFilteredProducts(req, res) {
 
 
         // ======================================
-        // VALIDATE PRICE VALUES
+        // VALIDATE MINIMUM PRICE
         // ======================================
 
         if (
@@ -182,6 +201,10 @@ function getFilteredProducts(req, res) {
 
         }
 
+
+        // ======================================
+        // VALIDATE MAXIMUM PRICE
+        // ======================================
 
         if (
             maximumPrice !== null &&
@@ -283,16 +306,49 @@ function getFilteredProducts(req, res) {
 
 
         // ======================================
-        // APPLY COMBINATORIAL FILTERING
+        // NORMALIZE SORT
+        // ======================================
+
+        const selectedSort =
+            sortBy &&
+            sortBy.trim() !== ""
+                ? sortBy
+                : "default";
+
+
+        // ======================================
+        // VALIDATE SORT
+        // ======================================
+
+        if (
+            !allowedSortOptions.includes(
+                selectedSort
+            )
+        ) {
+
+            return res.status(400).json({
+
+                success: false,
+
+                message:
+                    "Invalid sort option."
+
+            });
+
+        }
+
+
+        // ======================================
+        // STEP 1: FILTER
         // ======================================
 
         const filteredProducts =
             products.filter(product => {
 
 
-                // ----------------------------------
-                // CATEGORY CONDITION
-                // ----------------------------------
+                // --------------------------------
+                // CATEGORY
+                // --------------------------------
 
                 const categoryMatch =
                     selectedCategories.length === 0 ||
@@ -301,36 +357,36 @@ function getFilteredProducts(req, res) {
                     );
 
 
-                // ----------------------------------
-                // MINIMUM PRICE CONDITION
-                // ----------------------------------
+                // --------------------------------
+                // MINIMUM PRICE
+                // --------------------------------
 
                 const minimumPriceMatch =
                     minimumPrice === null ||
                     product.price >= minimumPrice;
 
 
-                // ----------------------------------
-                // MAXIMUM PRICE CONDITION
-                // ----------------------------------
+                // --------------------------------
+                // MAXIMUM PRICE
+                // --------------------------------
 
                 const maximumPriceMatch =
                     maximumPrice === null ||
                     product.price <= maximumPrice;
 
 
-                // ----------------------------------
-                // RATING CONDITION
-                // ----------------------------------
+                // --------------------------------
+                // RATING
+                // --------------------------------
 
                 const ratingMatch =
                     minimumRating === null ||
                     product.rating >= minimumRating;
 
 
-                // ----------------------------------
+                // --------------------------------
                 // INTERSECTION
-                // ----------------------------------
+                // --------------------------------
 
                 return (
                     categoryMatch &&
@@ -343,14 +399,55 @@ function getFilteredProducts(req, res) {
 
 
         // ======================================
-        // RESPONSE
+        // STEP 2: SORT
+        // ======================================
+
+        const sortedProducts =
+            [...filteredProducts];
+
+
+        // --------------------------------------
+        // PRICE LOW TO HIGH
+        // --------------------------------------
+
+        if (
+            selectedSort === "price-low-high"
+        ) {
+
+            sortedProducts.sort(
+                (a, b) =>
+                    a.price - b.price
+            );
+
+        }
+
+
+        // --------------------------------------
+        // TOP RATED FIRST
+        // --------------------------------------
+
+        else if (
+            selectedSort === "top-rated"
+        ) {
+
+            sortedProducts.sort(
+                (a, b) =>
+                    b.rating - a.rating
+            );
+
+        }
+
+
+        // ======================================
+        // STEP 3: RESPONSE
         // ======================================
 
         return res.status(200).json({
 
             success: true,
 
-            count: filteredProducts.length,
+            count:
+                sortedProducts.length,
 
             filters: {
 
@@ -368,11 +465,16 @@ function getFilteredProducts(req, res) {
 
             },
 
-            data: filteredProducts
+            sortBy:
+                selectedSort,
+
+            data:
+                sortedProducts
 
         });
 
     }
+
 
     catch (error) {
 
@@ -396,6 +498,12 @@ function getFilteredProducts(req, res) {
 }
 
 
+// ==========================================
+// EXPORT
+// ==========================================
+
 module.exports = {
+
     getFilteredProducts
+
 };
