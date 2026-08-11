@@ -1,8 +1,13 @@
+/* ==========================================
+   GLOBAL
+========================================== */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
+
 
 body {
     font-family: Arial, sans-serif;
@@ -11,7 +16,9 @@ body {
 }
 
 
-/* ================= APP ================= */
+/* ==========================================
+   APP LAYOUT
+========================================== */
 
 .app {
     display: flex;
@@ -19,256 +26,600 @@ body {
 }
 
 
-/* ================= SIDEBAR ================= */
+/* ==========================================
+   SIDEBAR
+========================================== */
 
 .sidebar {
     width: 280px;
-    background: white;
+    min-width: 280px;
+
+    background: #ffffff;
+
     padding: 25px;
+
     position: sticky;
     top: 0;
+
     height: 100vh;
+
     overflow-y: auto;
+
     border-right: 1px solid #ddd;
 }
 
+
+/* ==========================================
+   SIDEBAR HEADER
+========================================== */
+
 .sidebar-header {
     display: flex;
+
     justify-content: space-between;
+
     align-items: center;
+
     margin-bottom: 30px;
 }
+
 
 .sidebar-header h2 {
     font-size: 24px;
 }
 
+
 .reset-btn {
     border: none;
+
     background: transparent;
+
     color: #2563eb;
+
     cursor: pointer;
+
     font-size: 14px;
+
+    padding: 5px;
 }
+
 
 .reset-btn:hover {
     text-decoration: underline;
 }
 
 
-/* ================= FILTER SECTION ================= */
+/* ==========================================
+   FILTER SECTION
+========================================== */
 
 .filter-section {
     margin-bottom: 35px;
 }
 
+
 .filter-section h3 {
     margin-bottom: 15px;
+
     font-size: 17px;
 }
 
 
-/* ================= CHECKBOX ================= */
+/* ==========================================
+   CATEGORY CHECKBOX
+========================================== */
+
+.category-list {
+    display: flex;
+
+    flex-direction: column;
+}
+
 
 .checkbox-item {
     display: flex;
+
     align-items: center;
+
     gap: 10px;
-    margin: 14px 0;
+
+    margin: 10px 0;
+
     cursor: pointer;
+
     font-size: 15px;
 }
 
+
 .checkbox-item input {
     width: 17px;
+
     height: 17px;
+
     cursor: pointer;
+
+    accent-color: #2563eb;
 }
 
 
-/* ================= PRICE ================= */
+.checkbox-item:hover {
+    color: #2563eb;
+}
+
+
+/* ==========================================
+   PRICE VALUES
+========================================== */
 
 .price-values {
     display: flex;
+
     justify-content: space-between;
-    margin-bottom: 15px;
+
+    margin-bottom: 18px;
+
     font-size: 14px;
+
     font-weight: bold;
 }
 
+
+/* ==========================================
+   DUAL RANGE CONTAINER
+========================================== */
+
 .range-container {
     position: relative;
+
+    width: 100%;
+
     height: 30px;
 }
 
-.range-container input[type="range"] {
-    position: absolute;
-    width: 100%;
-    pointer-events: none;
-    appearance: none;
-    background: transparent;
-}
 
-.range-container input[type="range"]::-webkit-slider-runnable-track {
+/* ==========================================
+   RANGE BACKGROUND TRACK
+========================================== */
+
+.range-track {
+    position: absolute;
+
+    left: 0;
+
+    right: 0;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
     height: 5px;
+
     background: #ddd;
+
     border-radius: 5px;
 }
 
-.range-container input[type="range"]::-webkit-slider-thumb {
-    appearance: none;
-    width: 18px;
-    height: 18px;
+
+/* ==========================================
+   SELECTED RANGE
+========================================== */
+
+.range-progress {
+    position: absolute;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    height: 5px;
+
     background: #2563eb;
-    border-radius: 50%;
-    cursor: pointer;
-    pointer-events: auto;
-    margin-top: -6px;
+
+    border-radius: 5px;
+
+    left: 0;
+
+    width: 100%;
+
+    pointer-events: none;
 }
 
 
-/* ================= RATING ================= */
+/* ==========================================
+   RANGE INPUT
+========================================== */
+
+.price-slider {
+    position: absolute;
+
+    width: 100%;
+
+    height: 30px;
+
+    top: 0;
+
+    left: 0;
+
+    pointer-events: none;
+
+    appearance: none;
+
+    background: transparent;
+
+    margin: 0;
+}
+
+
+/* ==========================================
+   RANGE TRACK
+========================================== */
+
+.price-slider::-webkit-slider-runnable-track {
+    height: 5px;
+
+    background: transparent;
+
+    border: none;
+}
+
+
+.price-slider::-moz-range-track {
+    height: 5px;
+
+    background: transparent;
+
+    border: none;
+}
+
+
+/* ==========================================
+   RANGE THUMB - CHROME / EDGE / SAFARI
+========================================== */
+
+.price-slider::-webkit-slider-thumb {
+    appearance: none;
+
+    width: 18px;
+
+    height: 18px;
+
+    margin-top: -6px;
+
+    border-radius: 50%;
+
+    background: #2563eb;
+
+    border: 2px solid #ffffff;
+
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+
+    cursor: pointer;
+
+    pointer-events: auto;
+}
+
+
+/* ==========================================
+   RANGE THUMB - FIREFOX
+========================================== */
+
+.price-slider::-moz-range-thumb {
+    width: 18px;
+
+    height: 18px;
+
+    border-radius: 50%;
+
+    background: #2563eb;
+
+    border: 2px solid #ffffff;
+
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+
+    cursor: pointer;
+
+    pointer-events: auto;
+}
+
+
+/* ==========================================
+   RANGE FOCUS
+========================================== */
+
+.price-slider:focus {
+    outline: none;
+}
+
+
+.price-slider:focus-visible::-webkit-slider-thumb {
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+
+.price-slider:focus-visible::-moz-range-thumb {
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+
+/* ==========================================
+   RATING
+========================================== */
+
+.rating-list {
+    display: flex;
+
+    flex-direction: column;
+}
+
 
 .rating-option {
     display: flex;
+
     align-items: center;
+
     gap: 7px;
-    margin: 12px 0;
+
+    margin: 9px 0;
+
     cursor: pointer;
 }
+
 
 .rating-option input {
     cursor: pointer;
+
+    accent-color: #2563eb;
 }
 
-.rating-option span {
+
+.rating-option .stars {
     color: #f59e0b;
+
+    font-size: 16px;
+
+    letter-spacing: 1px;
+
+    min-width: 85px;
 }
+
 
 .rating-option .rating-text {
     color: #555;
+
     font-size: 14px;
 }
 
 
-/* ================= MAIN CONTENT ================= */
+.rating-option:hover .rating-text {
+    color: #222;
+}
+
+
+/* ==========================================
+   MAIN CONTENT
+========================================== */
 
 .main-content {
     flex: 1;
+
+    min-width: 0;
+
     padding: 35px;
 }
+
+
+/* ==========================================
+   PRODUCT HEADER
+========================================== */
 
 .products-header {
     margin-bottom: 25px;
 }
 
+
 .products-header h1 {
     font-size: 30px;
+
     margin-bottom: 7px;
 }
 
+
 .products-header p {
     color: #666;
+
+    font-size: 14px;
 }
 
 
-/* ================= PRODUCT GRID ================= */
+/* ==========================================
+   PRODUCT GRID
+========================================== */
 
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+
+    grid-template-columns:
+        repeat(auto-fill, minmax(230px, 1fr));
+
     gap: 22px;
 }
 
 
-/* ================= PRODUCT CARD ================= */
+/* ==========================================
+   PRODUCT CARD
+========================================== */
 
 .product-card {
-    background: white;
+    background: #ffffff;
+
     border-radius: 12px;
+
     overflow: hidden;
+
     border: 1px solid #e5e5e5;
-    transition: transform 0.2s, box-shadow 0.2s;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
+
 
 .product-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.08);
 }
+
+
+/* ==========================================
+   PRODUCT IMAGE
+========================================== */
 
 .product-image {
     width: 100%;
+
     height: 200px;
+
     object-fit: cover;
+
+    display: block;
+
     background: #eee;
 }
+
+
+/* ==========================================
+   PRODUCT INFO
+========================================== */
 
 .product-info {
     padding: 18px;
 }
 
+
+/* ==========================================
+   PRODUCT CATEGORY
+========================================== */
+
 .product-category {
     font-size: 12px;
+
     color: #777;
+
     margin-bottom: 7px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
 }
+
+
+/* ==========================================
+   PRODUCT NAME
+========================================== */
 
 .product-name {
     font-size: 17px;
+
     margin-bottom: 10px;
+
+    line-height: 1.3;
 }
+
+
+/* ==========================================
+   PRODUCT PRICE
+========================================== */
 
 .product-price {
     font-size: 20px;
+
     font-weight: bold;
+
     margin-bottom: 10px;
 }
 
+
+/* ==========================================
+   PRODUCT RATING
+========================================== */
+
 .product-rating {
     color: #f59e0b;
+
     font-size: 14px;
 }
 
 
-/* ================= EMPTY STATE ================= */
+.rating-number {
+    color: #777;
+
+    margin-left: 4px;
+}
+
+
+/* ==========================================
+   EMPTY STATE
+========================================== */
 
 .empty-state {
     display: none;
+
     text-align: center;
+
     padding: 100px 20px;
 }
 
+
 .empty-icon {
     font-size: 55px;
+
     margin-bottom: 20px;
 }
 
+
 .empty-state h2 {
     font-size: 24px;
+
     margin-bottom: 10px;
 }
 
+
 .empty-state p {
     color: #777;
+
     margin-bottom: 25px;
 }
 
+
 .reset-large-btn {
     border: none;
+
     background: #2563eb;
+
     color: white;
+
     padding: 12px 22px;
+
     border-radius: 7px;
+
     cursor: pointer;
+
     font-size: 15px;
 }
+
 
 .reset-large-btn:hover {
     background: #1d4ed8;
 }
 
 
-/* ================= RESPONSIVE ================= */
+/* ==========================================
+   RESPONSIVE - TABLET
+========================================== */
 
 @media (max-width: 768px) {
 
@@ -276,26 +627,58 @@ body {
         flex-direction: column;
     }
 
+
     .sidebar {
         width: 100%;
+
+        min-width: 100%;
+
         height: auto;
+
         position: relative;
+
         border-right: none;
+
         border-bottom: 1px solid #ddd;
     }
+
 
     .main-content {
         padding: 20px;
     }
 
+
     .product-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns:
+            repeat(2, 1fr);
     }
+
 }
 
+
+/* ==========================================
+   RESPONSIVE - MOBILE
+========================================== */
+
 @media (max-width: 500px) {
+
+    .main-content {
+        padding: 15px;
+    }
+
+
+    .products-header h1 {
+        font-size: 24px;
+    }
+
 
     .product-grid {
         grid-template-columns: 1fr;
     }
+
+
+    .product-image {
+        height: 220px;
+    }
+
 }
