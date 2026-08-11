@@ -1,82 +1,9 @@
 // ==========================================
-// PRODUCT DATA
+// API CONFIGURATION
 // ==========================================
 
-const products = [
-
-    {
-        id: 1,
-        name: "Wireless Headphones",
-        category: "Electronics",
-        price: 1999,
-        rating: 4,
-        image: "https://picsum.photos/400/300?random=1"
-    },
-
-    {
-        id: 2,
-        name: "Smart Watch",
-        category: "Electronics",
-        price: 2999,
-        rating: 5,
-        image: "https://picsum.photos/400/300?random=2"
-    },
-
-    {
-        id: 3,
-        name: "Cotton T-Shirt",
-        category: "Apparel",
-        price: 699,
-        rating: 4,
-        image: "https://picsum.photos/400/300?random=3"
-    },
-
-    {
-        id: 4,
-        name: "Denim Jacket",
-        category: "Apparel",
-        price: 1899,
-        rating: 3,
-        image: "https://picsum.photos/400/300?random=4"
-    },
-
-    {
-        id: 5,
-        name: "Running Shoes",
-        category: "Footwear",
-        price: 2499,
-        rating: 5,
-        image: "https://picsum.photos/400/300?random=5"
-    },
-
-    {
-        id: 6,
-        name: "Casual Sneakers",
-        category: "Footwear",
-        price: 1599,
-        rating: 4,
-        image: "https://picsum.photos/400/300?random=6"
-    },
-
-    {
-        id: 7,
-        name: "Bluetooth Speaker",
-        category: "Electronics",
-        price: 1299,
-        rating: 3,
-        image: "https://picsum.photos/400/300?random=7"
-    },
-
-    {
-        id: 8,
-        name: "Formal Shirt",
-        category: "Apparel",
-        price: 999,
-        rating: 5,
-        image: "https://picsum.photos/400/300?random=8"
-    }
-
-];
+const API_URL =
+    "http://localhost:5000/api/products";
 
 
 // ==========================================
@@ -91,7 +18,9 @@ const filterState = {
 
     maxPrice: 5000,
 
-    rating: null
+    rating: null,
+
+    sortBy: "default"
 
 };
 
@@ -103,149 +32,57 @@ const filterState = {
 const productGrid =
     document.getElementById("productGrid");
 
+
 const productCount =
     document.getElementById("productCount");
+
 
 const emptyState =
     document.getElementById("emptyState");
 
+
 const resetBtn =
     document.getElementById("resetBtn");
+
 
 const emptyResetBtn =
     document.getElementById("emptyResetBtn");
 
+
 const minPrice =
     document.getElementById("minPrice");
+
 
 const maxPrice =
     document.getElementById("maxPrice");
 
+
 const minPriceText =
     document.getElementById("minPriceText");
+
 
 const maxPriceText =
     document.getElementById("maxPriceText");
 
+
 const rangeProgress =
     document.getElementById("rangeProgress");
+
+
+const sortBy =
+    document.getElementById("sortBy");
+
 
 const categoryFilters =
     document.querySelectorAll(
         ".category-filter"
     );
 
+
 const ratingFilters =
     document.querySelectorAll(
         'input[name="rating"]'
     );
-
-
-// ==========================================
-// DISPLAY PRODUCTS
-// ==========================================
-
-function displayProducts(productList) {
-
-    productGrid.innerHTML = "";
-
-
-    // Update product count
-
-    productCount.textContent =
-        `${productList.length} product${productList.length !== 1 ? "s" : ""}`;
-
-
-    // ======================================
-    // ZERO RESULTS
-    // ======================================
-
-    if (productList.length === 0) {
-
-        productGrid.style.display = "none";
-
-        emptyState.style.display = "block";
-
-        return;
-    }
-
-
-    // ======================================
-    // PRODUCTS AVAILABLE
-    // ======================================
-
-    productGrid.style.display = "grid";
-
-    emptyState.style.display = "none";
-
-
-    // ======================================
-    // CREATE PRODUCT CARDS
-    // ======================================
-
-    productList.forEach(product => {
-
-        const card =
-            document.createElement("article");
-
-
-        card.className =
-            "product-card";
-
-
-        // Create star display
-
-        const stars =
-            "★".repeat(product.rating) +
-            "☆".repeat(5 - product.rating);
-
-
-        card.innerHTML = `
-
-            <img
-                class="product-image"
-                src="${product.image}"
-                alt="${product.name}"
-                loading="lazy"
-            >
-
-            <div class="product-info">
-
-                <div class="product-category">
-                    ${product.category}
-                </div>
-
-                <h3 class="product-name">
-                    ${product.name}
-                </h3>
-
-                <div class="product-price">
-                    ₹${product.price.toLocaleString("en-IN")}
-                </div>
-
-                <div
-                    class="product-rating"
-                    aria-label="${product.rating} out of 5 stars"
-                >
-
-                    ${stars}
-
-                    <span class="rating-number">
-                        (${product.rating})
-                    </span>
-
-                </div>
-
-            </div>
-
-        `;
-
-
-        productGrid.appendChild(card);
-
-    });
-
-}
 
 
 // ==========================================
@@ -322,11 +159,15 @@ function updateFilterState() {
     filterState.rating =
         getSelectedRating();
 
+
+    filterState.sortBy =
+        sortBy.value;
+
 }
 
 
 // ==========================================
-// UPDATE PRICE TEXT
+// UPDATE PRICE DISPLAY
 // ==========================================
 
 function updatePriceDisplay() {
@@ -350,11 +191,14 @@ function updateRangeProgress() {
     const minimum =
         Number(minPrice.min);
 
+
     const maximum =
         Number(minPrice.max);
 
+
     const currentMin =
         Number(minPrice.value);
+
 
     const currentMax =
         Number(maxPrice.value);
@@ -381,87 +225,299 @@ function updateRangeProgress() {
 
 
 // ==========================================
-// APPLY FILTERS
+// DISPLAY PRODUCTS
 // ==========================================
 
-function applyFilters() {
+function displayProducts(productList) {
 
-    // Update current state
-
-    updateFilterState();
+    productGrid.innerHTML = "";
 
 
-    const {
-        categories,
-        minPrice: minimumPrice,
-        maxPrice: maximumPrice,
-        rating: minimumRating
-    } = filterState;
+    // Update count
+
+    productCount.textContent =
+        `${productList.length} product${productList.length !== 1 ? "s" : ""}`;
 
 
     // ======================================
-    // FILTER PRODUCTS
+    // EMPTY RESULT
     // ======================================
 
-    const filteredProducts =
-        products.filter(product => {
+    if (productList.length === 0) {
+
+        productGrid.style.display = "none";
+
+        emptyState.style.display = "block";
+
+        return;
+    }
 
 
-            // -------------------------------
-            // CATEGORY
-            // -------------------------------
+    // ======================================
+    // PRODUCTS AVAILABLE
+    // ======================================
 
-            const categoryMatch =
-                categories.length === 0 ||
-                categories.includes(
-                    product.category
-                );
+    productGrid.style.display = "grid";
+
+    emptyState.style.display = "none";
 
 
-            // -------------------------------
-            // MINIMUM PRICE
-            // -------------------------------
+    // ======================================
+    // CREATE CARDS
+    // ======================================
 
-            const minPriceMatch =
-                product.price >= minimumPrice;
+    productList.forEach(product => {
 
-
-            // -------------------------------
-            // MAXIMUM PRICE
-            // -------------------------------
-
-            const maxPriceMatch =
-                product.price <= maximumPrice;
+        const card =
+            document.createElement("article");
 
 
-            // -------------------------------
-            // RATING
-            // -------------------------------
-
-            const ratingMatch =
-                minimumRating === null ||
-                product.rating >= minimumRating;
+        card.className =
+            "product-card";
 
 
-            // -------------------------------
-            // ALL CONDITIONS
-            // -------------------------------
+        // Generate stars
 
-            return (
-                categoryMatch &&
-                minPriceMatch &&
-                maxPriceMatch &&
-                ratingMatch
+        const stars =
+            "★".repeat(product.rating) +
+            "☆".repeat(5 - product.rating);
+
+
+        card.innerHTML = `
+
+            <img
+                class="product-image"
+                src="${product.image}"
+                alt="${product.name}"
+                loading="lazy"
+            >
+
+            <div class="product-info">
+
+                <div class="product-category">
+                    ${product.category}
+                </div>
+
+                <h3 class="product-name">
+                    ${product.name}
+                </h3>
+
+                <div class="product-price">
+                    ₹${product.price.toLocaleString("en-IN")}
+                </div>
+
+                <div
+                    class="product-rating"
+                    aria-label="${product.rating} out of 5 stars"
+                >
+
+                    ${stars}
+
+                    <span class="rating-number">
+                        (${product.rating})
+                    </span>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        productGrid.appendChild(card);
+
+    });
+
+}
+
+
+// ==========================================
+// FETCH PRODUCTS FROM BACKEND
+// ==========================================
+
+async function fetchProducts() {
+
+    try {
+
+        updateFilterState();
+
+
+        // ==================================
+        // CREATE QUERY PARAMETERS
+        // ==================================
+
+        const params =
+            new URLSearchParams();
+
+
+        // Categories
+
+        if (
+            filterState.categories.length > 0
+        ) {
+
+            params.set(
+                "categories",
+                filterState.categories.join(",")
             );
 
-        });
+        }
 
 
-    // Display result
+        // Minimum price
 
-    displayProducts(
-        filteredProducts
-    );
+        params.set(
+            "minPrice",
+            filterState.minPrice
+        );
+
+
+        // Maximum price
+
+        params.set(
+            "maxPrice",
+            filterState.maxPrice
+        );
+
+
+        // Rating
+
+        if (
+            filterState.rating !== null
+        ) {
+
+            params.set(
+                "rating",
+                filterState.rating
+            );
+
+        }
+
+
+        // Sort
+
+        if (
+            filterState.sortBy !== "default"
+        ) {
+
+            params.set(
+                "sortBy",
+                filterState.sortBy
+            );
+
+        }
+
+
+        // ==================================
+        // API REQUEST
+        // ==================================
+
+        const response =
+            await fetch(
+                `${API_URL}?${params.toString()}`
+            );
+
+
+        // ==================================
+        // HANDLE HTTP ERROR
+        // ==================================
+
+        if (!response.ok) {
+
+            throw new Error(
+                `Server returned ${response.status}`
+            );
+
+        }
+
+
+        // ==================================
+        // READ JSON
+        // ==================================
+
+        const result =
+            await response.json();
+
+
+        // ==================================
+        // HANDLE API ERROR
+        // ==================================
+
+        if (!result.success) {
+
+            throw new Error(
+                result.message ||
+                "Unable to fetch products."
+            );
+
+        }
+
+
+        // ==================================
+        // DISPLAY RESULTS
+        // ==================================
+
+        displayProducts(
+            result.data
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Failed to fetch products:",
+            error
+        );
+
+
+        productGrid.innerHTML = "";
+
+
+        productGrid.style.display = "none";
+
+
+        emptyState.style.display = "block";
+
+
+        emptyState.innerHTML = `
+
+            <div class="empty-icon">
+                ⚠️
+            </div>
+
+            <h2>
+                Unable to load products
+            </h2>
+
+            <p>
+                Please make sure the backend
+                server is running.
+            </p>
+
+            <button
+                type="button"
+                id="connectionRetryBtn"
+                class="reset-large-btn"
+            >
+                Try Again
+            </button>
+
+        `;
+
+
+        const connectionRetryBtn =
+            document.getElementById(
+                "connectionRetryBtn"
+            );
+
+
+        connectionRetryBtn.addEventListener(
+            "click",
+            fetchProducts
+        );
+
+    }
 
 }
 
@@ -474,7 +530,7 @@ categoryFilters.forEach(filter => {
 
     filter.addEventListener(
         "change",
-        applyFilters
+        fetchProducts
     );
 
 });
@@ -488,10 +544,20 @@ ratingFilters.forEach(filter => {
 
     filter.addEventListener(
         "change",
-        applyFilters
+        fetchProducts
     );
 
 });
+
+
+// ==========================================
+// SORT EVENT
+// ==========================================
+
+sortBy.addEventListener(
+    "change",
+    fetchProducts
+);
 
 
 // ==========================================
@@ -505,11 +571,10 @@ minPrice.addEventListener(
         const minimum =
             Number(minPrice.value);
 
+
         const maximum =
             Number(maxPrice.value);
 
-
-        // Prevent invalid range
 
         if (minimum > maximum) {
 
@@ -523,7 +588,7 @@ minPrice.addEventListener(
 
         updateRangeProgress();
 
-        applyFilters();
+        fetchProducts();
 
     }
 );
@@ -540,11 +605,10 @@ maxPrice.addEventListener(
         const minimum =
             Number(minPrice.value);
 
+
         const maximum =
             Number(maxPrice.value);
 
-
-        // Prevent invalid range
 
         if (maximum < minimum) {
 
@@ -558,7 +622,7 @@ maxPrice.addEventListener(
 
         updateRangeProgress();
 
-        applyFilters();
+        fetchProducts();
 
     }
 );
@@ -580,7 +644,7 @@ function resetFilters() {
     });
 
 
-    // Reset ratings
+    // Reset rating
 
     ratingFilters.forEach(filter => {
 
@@ -589,11 +653,16 @@ function resetFilters() {
     });
 
 
-    // Reset prices
+    // Reset price
 
     minPrice.value = 0;
 
     maxPrice.value = 5000;
+
+
+    // Reset sorting
+
+    sortBy.value = "default";
 
 
     // Reset state
@@ -606,6 +675,8 @@ function resetFilters() {
 
     filterState.rating = null;
 
+    filterState.sortBy = "default";
+
 
     // Update UI
 
@@ -614,15 +685,15 @@ function resetFilters() {
     updateRangeProgress();
 
 
-    // Show all products
+    // Fetch complete inventory
 
-    displayProducts(products);
+    fetchProducts();
 
 }
 
 
 // ==========================================
-// RESET BUTTON EVENTS
+// RESET BUTTONS
 // ==========================================
 
 resetBtn.addEventListener(
@@ -638,11 +709,11 @@ emptyResetBtn.addEventListener(
 
 
 // ==========================================
-// INITIAL PAGE LOAD
+// INITIAL LOAD
 // ==========================================
 
 updatePriceDisplay();
 
 updateRangeProgress();
 
-displayProducts(products);
+fetchProducts();
