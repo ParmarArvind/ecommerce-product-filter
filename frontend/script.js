@@ -3,6 +3,7 @@
 // ==========================================
 
 const products = [
+
     {
         id: 1,
         name: "Wireless Headphones",
@@ -74,6 +75,7 @@ const products = [
         rating: 5,
         image: "https://picsum.photos/400/300?random=8"
     }
+
 ];
 
 
@@ -82,10 +84,15 @@ const products = [
 // ==========================================
 
 const filterState = {
+
     categories: [],
+
     minPrice: 0,
+
     maxPrice: 5000,
+
     rating: null
+
 };
 
 
@@ -124,7 +131,9 @@ const rangeProgress =
     document.getElementById("rangeProgress");
 
 const categoryFilters =
-    document.querySelectorAll(".category-filter");
+    document.querySelectorAll(
+        ".category-filter"
+    );
 
 const ratingFilters =
     document.querySelectorAll(
@@ -148,7 +157,7 @@ function displayProducts(productList) {
 
 
     // ======================================
-    // EMPTY STATE
+    // ZERO RESULTS
     // ======================================
 
     if (productList.length === 0) {
@@ -162,7 +171,7 @@ function displayProducts(productList) {
 
 
     // ======================================
-    // PRODUCT GRID
+    // PRODUCTS AVAILABLE
     // ======================================
 
     productGrid.style.display = "grid";
@@ -170,15 +179,21 @@ function displayProducts(productList) {
     emptyState.style.display = "none";
 
 
+    // ======================================
+    // CREATE PRODUCT CARDS
+    // ======================================
+
     productList.forEach(product => {
 
         const card =
             document.createElement("article");
 
-        card.className = "product-card";
+
+        card.className =
+            "product-card";
 
 
-        // Generate stars
+        // Create star display
 
         const stars =
             "★".repeat(product.rating) +
@@ -212,20 +227,24 @@ function displayProducts(productList) {
                     class="product-rating"
                     aria-label="${product.rating} out of 5 stars"
                 >
+
                     ${stars}
 
                     <span class="rating-number">
                         (${product.rating})
                     </span>
+
                 </div>
 
             </div>
+
         `;
 
 
         productGrid.appendChild(card);
 
     });
+
 }
 
 
@@ -252,6 +271,7 @@ function getSelectedCategories() {
 
 
     return selectedCategories;
+
 }
 
 
@@ -277,6 +297,7 @@ function getSelectedRating() {
     return Number(
         selectedRating.value
     );
+
 }
 
 
@@ -305,7 +326,7 @@ function updateFilterState() {
 
 
 // ==========================================
-// UPDATE PRICE DISPLAY
+// UPDATE PRICE TEXT
 // ==========================================
 
 function updatePriceDisplay() {
@@ -365,7 +386,7 @@ function updateRangeProgress() {
 
 function applyFilters() {
 
-    // Update state first
+    // Update current state
 
     updateFilterState();
 
@@ -379,7 +400,7 @@ function applyFilters() {
 
 
     // ======================================
-    // FILTER MASTER INVENTORY
+    // FILTER PRODUCTS
     // ======================================
 
     const filteredProducts =
@@ -423,7 +444,7 @@ function applyFilters() {
 
 
             // -------------------------------
-            // INTERSECTION
+            // ALL CONDITIONS
             // -------------------------------
 
             return (
@@ -436,9 +457,11 @@ function applyFilters() {
         });
 
 
-    // Display filtered result
+    // Display result
 
-    displayProducts(filteredProducts);
+    displayProducts(
+        filteredProducts
+    );
 
 }
 
@@ -486,7 +509,7 @@ minPrice.addEventListener(
             Number(maxPrice.value);
 
 
-        // Prevent minimum > maximum
+        // Prevent invalid range
 
         if (minimum > maximum) {
 
@@ -521,7 +544,7 @@ maxPrice.addEventListener(
             Number(maxPrice.value);
 
 
-        // Prevent maximum < minimum
+        // Prevent invalid range
 
         if (maximum < minimum) {
 
@@ -547,6 +570,7 @@ maxPrice.addEventListener(
 
 function resetFilters() {
 
+
     // Reset categories
 
     categoryFilters.forEach(filter => {
@@ -565,7 +589,7 @@ function resetFilters() {
     });
 
 
-    // Reset price
+    // Reset prices
 
     minPrice.value = 0;
 
@@ -590,7 +614,7 @@ function resetFilters() {
     updateRangeProgress();
 
 
-    // Show complete inventory
+    // Show all products
 
     displayProducts(products);
 
@@ -614,7 +638,7 @@ emptyResetBtn.addEventListener(
 
 
 // ==========================================
-// INITIALIZATION
+// INITIAL PAGE LOAD
 // ==========================================
 
 updatePriceDisplay();
