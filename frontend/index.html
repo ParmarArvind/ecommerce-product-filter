@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Product Filter</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+    <div class="app">
+
+
+        <!-- =========================================
+             SIDEBAR
+        ========================================== -->
+
+        <aside
+            class="sidebar"
+            aria-label="Product filters"
+        >
+
+            <div class="sidebar-header">
+
+                <h2>Filters</h2>
+
+                <button
+                    type="button"
+                    id="resetBtn"
+                    class="reset-btn"
+                >
+                    Reset
+                </button>
+
+            </div>
+
+
+            <!-- =====================================
+                 CATEGORY
+            ====================================== -->
+
+            <section
+                class="filter-section"
+                aria-labelledby="categoryTitle"
+            >
+
+                <h3 id="categoryTitle">
+                    Category
+                </h3>
+
+
+                <div class="category-list">
+
+                    <label class="checkbox-item">
+
+                        <input
+                            type="checkbox"
+                            class="category-filter"
+                            value="Electronics"
+                        >
+
+                        <span>
+                            Electronics
+                        </span>
+
+                    </label>
+
+
+                    <label class="checkbox-item">
+
+                        <input
+                            type="checkbox"
+                            class="category-filter"
+                            value="Apparel"
+                        >
+
+                        <span>
+                            Apparel
+                        </span>
+
+                    </label>
+
+
+                    <label class="checkbox-item">
+
+                        <input
+                            type="checkbox"
+                            class="category-filter"
+                            value="Footwear"
+                        >
+
+                        <span>
+                            Footwear
+                        </span>
+
+                    </label>
+
+                </div>
+
+            </section>
+
+
+            <!-- =====================================
+                 PRICE RANGE
+            ====================================== -->
+
+            <section
+                class="filter-section"
+                aria-labelledby="priceTitle"
+            >
+
+                <h3 id="priceTitle">
+                    Price Range
+                </h3>
+
+
+                <div class="price-values">
+
+                    <span id="minPriceText">
+                        ₹0
+                    </span>
+
+                    <span id="maxPriceText">
+                        ₹5000
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="range-container"
+                    aria-label="Price range"
+                >
+
+                    <div class="range-track"></div>
+
+                    <div
+                        id="rangeProgress"
+                        class="range-progress"
+                    ></div>
+
+
+                    <input
+                        type="range"
+                        id="minPrice"
+                        class="price-slider min-price"
+                        min="0"
+                        max="5000"
+                        value="0"
+                        step="100"
+                        aria-label="Minimum price"
+                    >
+
+
+                    <input
+                        type="range"
+                        id="maxPrice"
+                        class="price-slider max-price"
+                        min="0"
+                        max="5000"
+                        value="5000"
+                        step="100"
+                        aria-label="Maximum price"
+                    >
+
+                </div>
+
+            </section>
+
+
+            <!-- =====================================
+                 RATING
+            ====================================== -->
+
+            <section
+                class="filter-section"
+                aria-labelledby="ratingTitle"
+            >
+
+                <h3 id="ratingTitle">
+                    Minimum Rating
+                </h3>
+
+
+                <div class="rating-list">
+
+                    <label class="rating-option">
+
+                        <input
+                            type="radio"
+                            name="rating"
+                            value="1"
+                        >
+
+                        <span class="stars">
+                            ★
+                        </span>
+
+                        <span class="rating-text">
+                            & above
+                        </span>
+
+                    </label>
+
+
+                    <label class="rating-option">
+
+                        <input
+                            type="radio"
+                            name="rating"
+                            value="2"
+                        >
+
+                        <span class="stars">
+                            ★★
+                        </span>
+
+                        <span class="rating-text">
+                            & above
+                        </span>
+
+                    </label>
+
+
+                    <label class="rating-option">
+
+                        <input
+                            type="radio"
+                            name="rating"
+                            value="3"
+                        >
+
+                        <span class="stars">
+                            ★★★
+                        </span>
+
+                        <span class="rating-text">
+                            & above
+                        </span>
+
+                    </label>
+
+
+                    <label class="rating-option">
+
+                        <input
+                            type="radio"
+                            name="rating"
+                            value="4"
+                        >
+
+                        <span class="stars">
+                            ★★★★
+                        </span>
+
+                        <span class="rating-text">
+                            & above
+                        </span>
+
+                    </label>
+
+
+                    <label class="rating-option">
+
+                        <input
+                            type="radio"
+                            name="rating"
+                            value="5"
+                        >
+
+                        <span class="stars">
+                            ★★★★★
+                        </span>
+
+                        <span class="rating-text">
+                            & above
+                        </span>
+
+                    </label>
+
+                </div>
+
+            </section>
+
+        </aside>
+
+
+
+        <!-- =========================================
+             MAIN CONTENT
+        ========================================== -->
+
+        <main class="main-content">
+
+
+            <!-- =====================================
+                 PRODUCT HEADER
+            ====================================== -->
+
+            <header class="products-header">
+
+                <div class="inventory-title">
+
+                    <h1>
+                        Product Inventory
+                    </h1>
+
+                    <p id="productCount">
+                        0 products
+                    </p>
+
+                </div>
+
+
+                <!-- SORT -->
+
+                <div class="sort-controls">
+
+                    <label
+                        for="sortBy"
+                        class="sort-label"
+                    >
+                        Sort By
+                    </label>
+
+
+                    <select
+                        id="sortBy"
+                        class="sort-select"
+                    >
+
+                        <option value="default">
+                            Default
+                        </option>
+
+                        <option value="price-low-high">
+                            Price: Low to High
+                        </option>
+
+                        <option value="top-rated">
+                            Top Rated First
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </header>
+
+
+
+            <!-- =====================================
+                 PRODUCT GRID
+            ====================================== -->
+
+            <section
+                id="productGrid"
+                class="product-grid"
+                aria-label="Product inventory"
+            >
+
+            </section>
+
+
+
+            <!-- =====================================
+                 EMPTY STATE
+            ====================================== -->
+
+            <section
+                id="emptyState"
+                class="empty-state"
+                aria-live="polite"
+            >
+
+                <div class="empty-icon">
+                    🛍️
+                </div>
+
+
+                <h2>
+                    No items match your criteria
+                </h2>
+
+
+                <p>
+                    Try changing your filters to
+                    find more products.
+                </p>
+
+
+                <button
+                    type="button"
+                    id="emptyResetBtn"
+                    class="reset-large-btn"
+                >
+                    Reset filters
+                </button>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
